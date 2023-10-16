@@ -1,26 +1,150 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container">
+    <div class="title"><h1>Todo App</h1></div>
+
+    <div class="actions">
+      <form @submit="addTask">
+        <input type="text" placeholder="Add Task" v-model="task" required id="task">
+        <button type="submit">Add</button>
+        <input type="text" placeholder="search task" v-model="searchQuery">
+      </form>
+    </div>
+
+    <div class="tasks">
+      <div class="task-items" v-for="todo in filteredTodos" :key="todo.id">
+        <p :class="{ done: todo.status }">{{ todo.details }}</p>
+        <button class="done-btn" @click="doneTask(todo.id)">{{ todo.status ? 'Undone' : 'Done' }}</button>
+        <button class="remove-btn" @click="removeTask(todo.id)">Remove</button>
+      </div>
+        <button class="clear-btn" v-if="hasTasks" @click="clearAllTasks">Clear ALL task</button>
+      </div>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import { v4 as uuidv4 } from 'uuid';
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  data(){
+    return{
+      task:'',
+      searchQuery: '',
+      todos:[]
+    }
+  },
+  methods:{
+    addTask(e){
+      e.preventDefault();
+      const newTask = {
+        id:uuidv4(),
+        details:this.task,
+        status:false
+      }
+      this.todos.unshift(newTask);
+      this.task=''
+
+    },
+    removeTask(id){
+      const index = this.todos.findIndex(todo => todo.id === id);
+      if (index !== -1) {
+        this.todos.splice(index, 1);
+      }
+    },
+    doneTask(id) {
+      const task = this.todos.find((todo) => todo.id === id);
+      if (task) {
+        task.status = !task.status;
+      }
+    },
+    clearAllTasks() {
+      this.todos = [];
+    },
+  },
+  computed: {
+  filteredTodos() {
+    return this.todos.filter(todo => {
+      return todo.details.toLowerCase().includes(this.searchQuery.toLowerCase());
+    });
+  },
+  hasTasks() {
+    return this.todos.length > 0;
+  },
+},
 }
+
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+body {
+  background: url(./assets/background.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.container{
+  border:1px solid;
+  border-radius: 5px;
+  width: 300px;
+  padding:20px;
+  margin:0 auto;
+  text-align: center;
+}
+.task-items{
+  display: flex;
+  padding:5px;
+  width: 270px;
+  border:1px solid #666;
+  margin: 5px;
+  align-items: center;
+  border-radius: 5px;
+}
+.task-items:hover{
+background-color: #ccc;
+cursor: pointer;
+}
+.remove-btn{
+  background-color: red;
+  color:#fff;
+  width: auto;
+  height: auto;
+  font-size: 14px;
+  padding:5px;
+  margin-right: 10px;
+  cursor: pointer;
+  border:1px solid;
+  border-radius: 5px;
+}
+.done-btn{
+  background-color: blue;
+  color:#fff;
+  width: auto;
+  height: auto;
+  font-size: 14px;
+  padding:5px;
+  cursor: pointer;
+  border:1px solid;
+  border-radius: 5px;
+  margin-left: auto;
+}
+.clear-btn{
+  background-color: black;
+  color:#fff;
+  width: auto;
+  height: auto;
+  font-size: 14px;
+  padding:5px;
+  cursor: pointer;
+  border:1px solid;
+  border-radius: 5px;
+  margin-left: auto;
+}
+.done{
+  text-decoration: line-through;
 }
 </style>
