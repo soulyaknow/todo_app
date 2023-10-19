@@ -1,22 +1,20 @@
 <template>
     <div class="container">
-    <div class="title"><h1>Todo App</h1></div>
-
-    <div class="actions">
-      <form @submit="addTask">
-        <input type="text" placeholder="Add Task" v-model="task" required id="task">
-        <button type="submit">Add</button>
-        <input type="text" placeholder="search task" v-model="searchQuery">
-      </form>
-    </div>
-
-    <div class="tasks">
-      <div class="task-items" v-for="todo in filteredTodos" :key="todo.id">
-        <p :class="{ done: todo.status }">{{ todo.details }}</p>
-        <button class="done-btn" @click="doneTask(todo.id)">{{ todo.status ? 'Undone' : 'Done' }}</button>
-        <button class="remove-btn" @click="removeTask(todo.id)">Remove</button>
+      <h3>Task</h3>
+      <div class="actions">
+        <form @submit="addTask">
+          <input type="text" placeholder="Add Task" v-model="task" required id="task">
+          <button type="submit" id="add">Add<i class="fa fa-plus" aria-hidden="true"></i></button>
+          <input type="text" placeholder="search task" v-model="searchQuery">
+        </form>
       </div>
-        <button class="clear-btn" v-if="hasTasks" @click="clearAllTasks">Clear ALL task</button>
+      <div class="tasks">
+        <div class="task-items" v-for="todo in filteredTodos" :key="todo.id">
+          <p :class="{ done: todo.status }">{{ todo.details }}</p>
+          <button class="done-btn" @click="doneTask(todo.id)"><i class="fa fa-check" aria-hidden="true"></i></button>
+          <button class="remove-btn" @click="removeTask(todo.id)"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+          <button class="clear-btn" v-if="hasTasks" @click="clearAllTasks">Clear Task</button>
       </div>
     </div>
 </template>
@@ -28,6 +26,7 @@ export default {
     return{
       task:'',
       searchQuery: '',
+      color: '',
       todos:[]
     }
   },
@@ -40,7 +39,8 @@ export default {
         status:false
       }
       this.todos.unshift(newTask);
-      this.task=''
+      this.task = '';
+      this.color = '#fff'
 
     },
     removeTask(id){
@@ -74,6 +74,16 @@ export default {
 </script>
 
 <style>
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-image: url(./assets/background.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: sans-serif;
+}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -81,11 +91,12 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-body {
-  background: url(./assets/background.jpg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+h3 {
+  border-radius: 20px;
+  font-size: 28px;
+  color: white;
+  text-shadow: 2px 2px 4px #000000;
+  letter-spacing: 1px;
 }
 .container{
   border:1px solid;
@@ -94,19 +105,68 @@ body {
   padding:20px;
   margin:0 auto;
   text-align: center;
+  background-color: #ececec;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+  font-family: sans-serif;
 }
+.container input[type="text"] {
+  height: 30px;
+  border: none;
+  border-radius: 20px;
+  font-size: 20px;
+  text-align: center;
+  transition: all .3s ease-in-out;
+}
+.container input:last-of-type {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.container input:first-of-type {
+  margin-bottom: 10px;
+}
+.container input[type="text"]:focus {
+  outline: none;
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+.container #add {
+  height: 30px;
+  width: 100px;
+  border: none;
+  font-size: 15px;
+  background-color: #3498db;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+.container #add:hover {
+  opacity: 0.5;
+}
+::placeholder {
+  color: #bdc3c7;
+} 
 .task-items{
   display: flex;
+  text-align: center;
+  color: #fff;
+  background-color: #54b4f3;
   padding:5px;
   width: 270px;
   border:1px solid #666;
   margin: 5px;
   align-items: center;
+  text-align: center;
   border-radius: 5px;
+  font-size: 15px;
+  transition: all .2s linear;
+  cursor: pointer;
+  height: 30px;
 }
 .task-items:hover{
-background-color: #ccc;
-cursor: pointer;
+  background-color: #a7daee;
+  cursor: pointer;
+  outline: none;
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.2);
 }
 .remove-btn{
   background-color: red;
@@ -133,18 +193,23 @@ cursor: pointer;
   margin-left: auto;
 }
 .clear-btn{
-  background-color: black;
-  color:#fff;
+  background-color: #54b4f3;
+  color: #fff;
   width: auto;
-  height: auto;
-  font-size: 14px;
+  height: 30px;
+  font-size: 15px;
   padding:5px;
   cursor: pointer;
   border:1px solid;
   border-radius: 5px;
   margin-left: auto;
+  transition: all .3s ease-in-out;
+}
+.remove-btn:hover, .done-btn:hover, .clear-btn:hover {
+  opacity: 0.5;
 }
 .done{
   text-decoration: line-through;
+  color: black;
 }
 </style>
