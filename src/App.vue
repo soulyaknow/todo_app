@@ -3,9 +3,11 @@
       <h3>Task</h3>
       <div class="actions">
         <form @submit="addTask">
-          <input type="text" placeholder="Add Task" v-model="task" required id="task">
-          <button type="submit" id="add">Add<i class="fa fa-plus" aria-hidden="true"></i></button>
-          <input type="text" placeholder="search task" v-model="searchQuery">
+          <div id="input-button">
+            <input type="text" placeholder="Add Task" v-model="task" required id="task">
+            <button type="submit" id="add">Add<i class="fa fa-plus" aria-hidden="true"></i></button>
+          </div>
+          <input type="text" placeholder="search task" id="search" v-model="searchQuery">
         </form>
       </div>
       <div class="tasks">
@@ -101,7 +103,7 @@ h3 {
 .container{
   border:1px solid;
   border-radius: 5px;
-  width: 300px;
+  width: 330px;
   padding:20px;
   margin:0 auto;
   text-align: center;
@@ -112,10 +114,23 @@ h3 {
 .container input[type="text"] {
   height: 30px;
   border: none;
-  border-radius: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
   font-size: 20px;
   text-align: center;
   transition: all .3s ease-in-out;
+}
+
+.container #input-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container input#search {
+  width: 100%;
+  margin: 10px auto 10px auto;
+  border-radius: 15px;
 }
 .container input:last-of-type {
   margin-top: 10px;
@@ -134,7 +149,8 @@ h3 {
   border: none;
   font-size: 15px;
   background-color: #3498db;
-  border-radius: 10px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   color: #fff;
   cursor: pointer;
   transition: all .3s ease-in-out;
@@ -150,10 +166,12 @@ h3 {
   text-align: center;
   color: #fff;
   background-color: #54b4f3;
-  padding:5px;
-  width: 270px;
+  padding: 5px 0 5px 0;
+  /* width: 270px; */
+  width: 100%;
+  margin: auto;
   border:1px solid #666;
-  margin: 5px;
+  margin-bottom: 10px;
   align-items: center;
   text-align: center;
   border-radius: 5px;
